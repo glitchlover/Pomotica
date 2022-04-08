@@ -23,18 +23,25 @@ class PomoTasksOrderInput extends StatelessWidget {
           if (value.tasksOrder == null) return CircularProgressIndicator();
           return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 28.0),
-              child: SizedBox(
-                height: value.tasksOrder.length * 70,
-                child: ListView.separated(
-                  primary: false,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (builder, index) => HabiticaCard(title: value.tasksOrder[index].toString(), type: value.tasksType[index].toString()),
-                  separatorBuilder: (builder, i) => Container(
-                    color: MyColors.shadowColor,
-                    height: 3,
-                  ),
-                  itemCount: value.tasksOrder.length,
-                ),
+              child: ListView.builder(
+                shrinkWrap: true,
+                primary: false,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (builder, index) => HabiticaCard(title: value.tasksOrder[index].toString(), type: value.tasksType[index].toString()),
+                // separatorBuilder: (builder, i) => Column(
+                //   children: [
+                //     Container(
+                //       height: 3,
+                //       width:Get.width - 32,
+                //       decoration: BoxDecoration(
+                //         color: MyColors.shadowColor,
+                //         borderRadius: BorderRadius.circular(15)
+                //       ),
+                //     ),
+                  //   SizedBox(height: 10,)
+                  // ],
+                // ),
+                itemCount: value.tasksOrder.length,
               ));
         });
   }

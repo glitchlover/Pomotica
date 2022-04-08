@@ -46,7 +46,7 @@ class MyText extends Text {
     return Text(data, style: textThemePoppins(color, fontWeight, fontSize));
   }
 
-  TextStyle textThemePoppins(
+  static TextStyle textThemePoppins(
       Color? color, FontWeight? fontWeight, double? fontSize) {
     return GoogleFonts.poppins(
         textStyle: TextStyle(

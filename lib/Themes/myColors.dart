@@ -4,14 +4,15 @@ class MyColors {
   static const brightness = Brightness.dark;
   static const appBackgroundColor = Color.fromARGB(255, 25, 15, 44);
   static const scaffoldBackgroundColor = Color(0XFF291946);
-  static const backgroundColor = Color(0xFF141f2a);
+  static const backgroundColor = Color(0xFF19171C);
+  static const backgroundColorLight = Color(0xFF211F2A);
   static const secondarybackgroundColor = Color.fromARGB(255, 30, 31, 51);
   static const shadowColor = Color.fromARGB(255, 33, 16, 48);
   static const dividerColor = Color.fromARGB(255, 19, 26, 34);
   static const primaryColor = Color(0xFF018ff5);
   static const primaryColorLight = Color.fromARGB(255, 86, 176, 250);
   static const blue = Color.fromARGB(255, 86, 176, 250);
-  static const purple = Color(0xFF018ff5);
+  static const purple = Color(0xFF6133B4);
   static const pink = Color.fromARGB(255, 250, 93, 127);
   static const pinkDark = Colors.pinkAccent;
   static const yellow = Color(0xFFF2A32F);

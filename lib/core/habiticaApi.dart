@@ -14,15 +14,9 @@ class HabiticaApi {
   String path;
   Client client = Client();
 
-  HabiticaApi({this.path = '/api/v3/user'}) {
-    Timer(const Duration(milliseconds: 1000), () async {
-      AuthModel auth = await HabiticaAuthServices.getAuth();
-      _apiKey = auth.apiKey;
-      _userId = auth.userId;
-    });
-  }
+  HabiticaApi({this.path = '/api/v3/user'});
 
-  Future<Response> getApiResponse() async{
+  Future<Response> getApiResponse() async {
     await Future.delayed(const Duration(milliseconds: 2000));
     return client.get(gethabiticaUri(path), headers: await getHeaders());
   }
@@ -33,7 +27,10 @@ class HabiticaApi {
         path: path,
       );
 
-  Future<Map<String, String>> getHeaders() async{
+  Future<Map<String, String>> getHeaders() async {
+    AuthModel auth = await HabiticaAuthServices.getAuth();
+    _apiKey = auth.apiKey;
+    _userId = auth.userId;
     await Future.delayed(const Duration(milliseconds: 2000));
     return {
       'Content-Type': 'json',

@@ -10,6 +10,7 @@ import 'package:pomotica/Themes/myColors.dart';
 import 'package:pomotica/screen/authScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:pomotica/services/userDataService.dart';
+import 'package:pomotica/widget/HomeScreenWidget.dart/habiticaCard.dart';
 
 main() async {
   await TasksOrderCrud().init();
@@ -26,6 +27,12 @@ class MyApp extends StatelessWidget {
         title: 'Pomotica',
         debugShowCheckedModeBanner: false,
         theme: MyColors.colorThemeData(),
+        // home: Scaffold(
+        //     body: HabiticaCard(
+        //   title: "hello",
+        //   type: "Habit",
+        //   notes: "Some notes",
+        // ))
         home: StreamBuilder(
           builder: ((context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -47,6 +54,7 @@ class MyApp extends StatelessWidget {
             }
           }),
           stream: UserDataService().habiticaToPomoticaTaskModel().asStream(),
-        ));
+        )
+        );
   }
 }
