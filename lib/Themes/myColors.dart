@@ -11,6 +11,7 @@ class MyColors {
   static const primaryColor = Color(0xFF018ff5);
   static const primaryColorLight = Color.fromARGB(255, 86, 176, 250);
   static const blue = Color.fromARGB(255, 86, 176, 250);
+  static const purple = Color(0xFF018ff5);
   static const pink = Color.fromARGB(255, 250, 93, 127);
   static const pinkDark = Colors.pinkAccent;
   static const yellow = Color(0xFFF2A32F);

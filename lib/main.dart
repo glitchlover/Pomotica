@@ -1,14 +1,11 @@
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:isar/isar.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pomotica/database/tasksOrderCrud.dart';
 import 'package:pomotica/model/pomoticaTasksOrderModel.dart';
 import 'package:pomotica/screen/homeScreen.dart';
 import 'package:pomotica/screen/internetNotFound.dart';
 import 'package:pomotica/screen/loadingScreen.dart';
 import 'package:pomotica/screen/somethingWentWrongScreen.dart';
-import 'package:pomotica/services/documentServices.dart';
-import 'package:pomotica/services/habiticaAuthServices.dart';
 import 'package:pomotica/Themes/myColors.dart';
 import 'package:pomotica/screen/authScreen.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +13,7 @@ import 'package:pomotica/services/userDataService.dart';
 
 main() async {
   await TasksOrderCrud().init();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -33,16 +30,15 @@ class MyApp extends StatelessWidget {
           builder: ((context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return LoadingScreen();
-            } else if (snapshot.data == "Not Connected") {
-              return InternetNotFoundScreen();
-            } else if (snapshot.data == "Error") {
-              return SomethingWentWrongScreen();
+            } else if (snapshot.data.toString().contains("Not Connected")) {
+              return const InternetNotFoundScreen();
+            } else if (snapshot.data.toString().contains("Error")) {
+              return const SomethingWentWrongScreen();
             } else {
               print("snapshot: " +
                   (snapshot.data.toString().contains("Error")
                       ? "Error"
                       : "No Error"));
-              print("snapshot: " + snapshot.requireData.toString());
               TasksOrderCrud.tasksOrderCreate(isar, snapshot.requireData! as List<PomoticaTasksOrder>);
               if (snapshot.data == "" || snapshot.data == null) {
                 return AuthScreen();

@@ -44,7 +44,11 @@ class HomeScreen extends StatelessWidget {
           physics: ScrollPhysics(),
           padding: EdgeInsets.zero,
           child: Column(
-            children: [PomoSpace(), PomoTasksOrderInput()],
+            children: [
+              PomoSpace(), 
+              SizedBox(height: 15,),
+              PomoTasksOrderInput()
+              ],
           ),
         ));
   }

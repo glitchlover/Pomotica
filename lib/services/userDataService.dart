@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:http/http.dart';
 import 'package:isar/isar.dart';
@@ -29,16 +30,18 @@ class UserDataService {
 
   setTask() {}
 
-  Future<List<Datum>?> fetchTaskModel() async {
+  fetchTaskModel() async {
     var response = await HabiticaApi(path: taskpath).getApiResponse();
 
-    if (response.statusCode == 200) {
-      // print(response.body);
-      HabiticaTaskModel taskModel = HabiticaTaskModel.fromJson(response.body);
-      // await DocumentServices(db: "tasksOrder").saveTasksOrder(taskModel);
-      return taskModel.data;
-    } else {
-      return [];
+    try {
+      if (response.statusCode == 200) {
+        HabiticaTaskModel taskModel = HabiticaTaskModel.fromJson(response.body);
+        return taskModel.data;
+      } else {
+        return "Error!: statusCode = " + response.statusCode.toString();
+      }
+    } on SocketException catch (e) {
+      return "Not Connected: " + e.message;
     }
   }
 

@@ -2,7 +2,6 @@
 //
 //     final habiticaTaskModel = habiticaTaskModelFromMap(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class HabiticaTaskModel {

@@ -28,25 +28,8 @@ class PomoTasksOrderInput extends StatelessWidget {
                 child: ListView.separated(
                   primary: false,
                   physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (builder, index) => ListTile(
-                    hoverColor: MyColors.primaryColorLight,
-                    trailing: Container(
-                        constraints: BoxConstraints(
-                          maxHeight: 50,
-                        ),
-                        child: MyText(value.tasksType[index].toString())),
-                    title: MarkdownBody(
-                      data: value.tasksOrder[index].toString(),
-                      extensionSet: md.ExtensionSet(
-                        md.ExtensionSet.gitHubFlavored.blockSyntaxes,
-                        [
-                          md.EmojiSyntax(),
-                          ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes
-                        ],
-                      ),
-                    ),
-                  ),
-                  separatorBuilder: (builder, cotext) => Container(
+                  itemBuilder: (builder, index) => HabiticaCard(title: value.tasksOrder[index].toString(), type: value.tasksType[index].toString()),
+                  separatorBuilder: (builder, i) => Container(
                     color: MyColors.shadowColor,
                     height: 3,
                   ),

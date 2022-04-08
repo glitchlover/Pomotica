@@ -10,9 +10,9 @@ class HabiticaApi {
   late AuthModel authModel;
   late String _apiKey;
   late String _userId;
-  String _xclient = "${MyHabiticaAuth.userId}+pomotica";
+  final String _xclient = "${MyHabiticaAuth.userId}+pomotica";
   String path;
-  Client client = new Client();
+  Client client = Client();
 
   HabiticaApi({this.path = '/api/v3/user'}) {
     Timer(const Duration(milliseconds: 1000), () async {
@@ -23,7 +23,7 @@ class HabiticaApi {
   }
 
   Future<Response> getApiResponse() async{
-    await Future.delayed(Duration(milliseconds: 2000));
+    await Future.delayed(const Duration(milliseconds: 2000));
     return client.get(gethabiticaUri(path), headers: await getHeaders());
   }
 
@@ -34,7 +34,7 @@ class HabiticaApi {
       );
 
   Future<Map<String, String>> getHeaders() async{
-    await Future.delayed(Duration(milliseconds: 2000));
+    await Future.delayed(const Duration(milliseconds: 2000));
     return {
       'Content-Type': 'json',
       'x-api-user': _userId,

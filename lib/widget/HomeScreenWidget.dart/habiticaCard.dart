@@ -19,10 +19,19 @@ class HabiticaCard extends StatelessWidget {
     return ListTile(
       hoverColor: MyColors.primaryColorLight,
       trailing: Container(
+        padding: EdgeInsets.all(4),
           constraints: BoxConstraints(
             maxHeight: 50,
           ),
-          child: MyText(type)),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: MyColors.purple.withOpacity(0.3),
+            boxShadow: [
+              BoxShadow(color: MyColors.shadowColor, spreadRadius: 2),
+            ],
+          ),
+          child: MyText(type)
+          ),
       title: MarkdownBody(
         data: title.toString(),
         extensionSet: md.ExtensionSet(
