@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:pomotica/services/userDataService.dart';
 
 main() async {
-  // await TasksOrderCrud();
+  await TasksOrderCrud().init();
   runApp(MyApp());
 }
 
@@ -24,11 +24,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    Isar isar = TasksOrderCrud.isar;
     return GetMaterialApp(
         title: 'Pomotica',
         debugShowCheckedModeBanner: false,
         theme: MyColors.colorThemeData(),
-        home: FutureBuilder(
+        home: StreamBuilder(
           builder: ((context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return LoadingScreen();
@@ -41,14 +42,15 @@ class MyApp extends StatelessWidget {
                   (snapshot.data.toString().contains("Error")
                       ? "Error"
                       : "No Error"));
-              print("snapshot: " + snapshot.data.toString());
+              print("snapshot: " + snapshot.requireData.toString());
+              TasksOrderCrud.tasksOrderCreate(isar, snapshot.requireData! as List<PomoticaTasksOrder>);
               if (snapshot.data == "" || snapshot.data == null) {
                 return AuthScreen();
               }
               return HomeScreen();
             }
           }),
-          future: UserDataService().habiticaToPomoticaTaskModel(),
+          stream: UserDataService().habiticaToPomoticaTaskModel().asStream(),
         ));
   }
 }

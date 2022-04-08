@@ -9,9 +9,9 @@ class TasksOrderCrud {
   static late Isar isar;
 
   TasksOrderCrud() {
-    Timer(Duration(milliseconds: 100), () {
-      init();
-    });
+    // Timer(Duration(milliseconds: 100), () {
+    //   init();
+    // });
   }
 
   init() async {
@@ -22,16 +22,19 @@ class TasksOrderCrud {
     );
   }
 
-  static List<int> tasksOrderCreate(Isar isar, PomoticaTasksOrder tasksOrder) {
-    isar.writeTxnSync((isar) => {
-          tasksOrder.pomoticataskid =
-              isar.pomoticaTasksOrders.putSync(tasksOrder)
+  static List<int> tasksOrderCreate(Isar isar, List<PomoticaTasksOrder> tasksOrder) {
+    for(var tasks in tasksOrder) {
+      isar.writeTxnSync((isar) => {
+          tasks.pomoticataskid =
+              isar.pomoticaTasksOrders.putSync(tasks)
         });
+    }
+    
     return [];
   }
 
-  static IsarCollection<PomoticaTasksOrder> tasksOrderGetAll(Isar isar) {
-    var allTasksOrder = isar.pomoticaTasksOrders;
+  static List<PomoticaTasksOrder> tasksOrderGetAll(Isar isar) {
+    var allTasksOrder = isar.pomoticaTasksOrders.where().findAllSync();
     return allTasksOrder;
   }
 }

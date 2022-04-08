@@ -18,8 +18,6 @@ class UserDataService {
   String username = "";
   String taskpath = '/api/v3/tasks/user';
 
-  setTaskIsar() async {}
-
   setUsername() async {}
 
   getUsername() async {
@@ -31,26 +29,50 @@ class UserDataService {
 
   setTask() {}
 
-  Future<List<Datum>> fetchTaskModel() async {
+  Future<List<Datum>?> fetchTaskModel() async {
     var response = await HabiticaApi(path: taskpath).getApiResponse();
 
     if (response.statusCode == 200) {
       // print(response.body);
       HabiticaTaskModel taskModel = HabiticaTaskModel.fromJson(response.body);
+      // await DocumentServices(db: "tasksOrder").saveTasksOrder(taskModel);
       return taskModel.data;
     } else {
       return [];
     }
   }
 
+  Future<HabiticaTaskModel> getTasksOrder() async {
+    var tasksOrderModel = await documentServices.retriveTasksOrder();
+    return tasksOrderModel;
+  }
+
   Future<List<PomoticaTasksOrder>> habiticaToPomoticaTaskModel() async {
     List<PomoticaTasksOrder> pomoticaTasksOrder = [];
-    List<Datum> data = await fetchTaskModel();
+    List<Datum>? data = await fetchTaskModel();
 
-    for (int i = 0; i < data.length; i++) {
-      pomoticaTasksOrder.add(
-        PomoticaTasksOrder(frequency: data[i].frequency, type: data[i].type, notes: data[i].notes, tags: data[i].tags, value: data[i].value, priority: data[i].priority, attribute: data[i].attribute, createdAt: data[i].createdAt, updatedAt: data[i].updatedAt, id: data[i].id, text: data[i].text, alias: data[i].alias, everyX: data[i].everyX, streak: data[i].streak, yesterDaily: data[i].yesterDaily, completed: data[i].completed, collapseChecklist: data[i].collapseChecklist, isDue: data[i].isDue, isSync: true)
-      );
+    for (int i = 0; i < data!.length; i++) {
+      pomoticaTasksOrder.add(PomoticaTasksOrder(
+          pomoticataskid: i,
+          frequency: data[i].frequency,
+          type: data[i].type,
+          notes: data[i].notes,
+          tags: data[i].tags,
+          value: data[i].value,
+          priority: data[i].priority,
+          attribute: data[i].attribute,
+          createdAt: data[i].createdAt,
+          updatedAt: data[i].updatedAt,
+          id: data[i].id,
+          text: data[i].text,
+          alias: data[i].alias,
+          everyX: data[i].everyX,
+          streak: data[i].streak,
+          yesterDaily: data[i].yesterDaily,
+          completed: data[i].completed,
+          collapseChecklist: data[i].collapseChecklist,
+          isDue: data[i].isDue,
+          isSync: true));
     }
 
     return pomoticaTasksOrder;

@@ -24,7 +24,7 @@ class PomoTasksOrderInput extends StatelessWidget {
           return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 28.0),
               child: SizedBox(
-                height: value.tasksOrder.length * 50,
+                height: value.tasksOrder.length * 70,
                 child: ListView.separated(
                   primary: false,
                   physics: NeverScrollableScrollPhysics(),
@@ -65,13 +65,12 @@ class PomoTasksOrderInputController extends GetxController {
   @override
   void onInit() async {
     List<PomoticaTasksOrder> tasks =
-        await UserDataService().habiticaToPomoticaTaskModel();
+        TasksOrderCrud.tasksOrderGetAll(isar);
     for (var task in tasks) {
       if (task.type == "reward") continue;
       this.tasksOrder.add(task.text);
       this.tasksType.add(task.type);
       update();
-      await TasksOrderCrud.tasksOrderCreate(isar, task);
     }
     update();
     super.onInit();

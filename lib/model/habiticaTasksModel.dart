@@ -430,18 +430,18 @@ class Data {
         required this.group,
     });
 
-    final DataGroup group;
+    final DataGroup? group;
 
     factory Data.fromJson(String str) => Data.fromMap(json.decode(str));
 
     String toJson() => json.encode(toMap());
 
     factory Data.fromMap(Map<String, dynamic> json) => Data(
-        group: DataGroup.fromMap(json["group"]),
+        group: json["group"] == null ? null : DataGroup.fromMap(json["group"]),
     );
 
     Map<String, dynamic> toMap() => {
-        "group": group.toMap(),
+        "group": group!.toMap(),
     };
 }
 

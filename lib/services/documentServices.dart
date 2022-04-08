@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:pomotica/model/authModel.dart';
+import 'package:pomotica/model/habiticaTasksModel.dart';
 import 'package:pomotica/services/habiticaAuthServices.dart';
 
 import '../model/habiticaUserModel.dart';
@@ -85,5 +86,22 @@ class DocumentServices {
         HabiticaUserModel.fromJson(contents);
 
     return habiticaUserModel;
+  }
+
+  saveTasksOrder(HabiticaTaskModel tasksOrderModel) async{
+    await Future.delayed(Duration(milliseconds: 1000));
+    var contents = tasksOrderModel.toJson();
+    print("saveUserData: " + contents.length.toString());
+    dbFile.writeAsStringSync(contents);
+  }
+
+  Future<HabiticaTaskModel> retriveTasksOrder() async {
+    await Future.delayed(Duration(milliseconds: 1000));
+    var contents = dbFile.readAsStringSync();
+    // print("retriveUser: " + contents);
+    HabiticaTaskModel habiticaTaskModel =
+        HabiticaTaskModel.fromJson(contents);
+
+    return habiticaTaskModel;
   }
 }

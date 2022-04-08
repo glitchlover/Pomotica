@@ -1771,7 +1771,7 @@ class Stats {
     factory Stats.fromMap(Map<String, dynamic> json) => Stats(
         buffs: Buffs.fromMap(json["buffs"]),
         training: Training.fromMap(json["training"]),
-        hp: json["hp"],
+        hp: json["hp"].toInt(),
         mp: json["mp"],
         exp: json["exp"],
         gp: json["gp"].toDouble(),
