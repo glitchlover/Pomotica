@@ -2,6 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:isar/isar.dart';
+
+import 'package:pomotica/model/pomoticaUserModel.dart';
+
 part 'pomoticaTasksOrderModel.g.dart';
 
 @Collection()
@@ -30,10 +33,11 @@ class PomoticaTasksOrder {
   final DateTime? startDate;
   final bool? isDue;
   final DateTime? date;
+  final bool isActive;
   final bool isSync;
   PomoticaTasksOrder({
     this.pomoticataskid,
-    required this.frequency,
+    this.frequency,
     required this.type,
     required this.notes,
     required this.tags,
@@ -44,16 +48,17 @@ class PomoticaTasksOrder {
     required this.updatedAt,
     required this.id,
     required this.text,
-    required this.alias,
-    required this.everyX,
-    required this.streak,
+    this.alias,
+    this.everyX,
+    this.streak,
     this.nextDue,
-    required this.yesterDaily,
-    required this.completed,
-    required this.collapseChecklist,
+    this.yesterDaily,
+    this.completed,
+    this.collapseChecklist,
     this.startDate,
-    required this.isDue,
+    this.isDue,
     this.date,
+    required this.isActive,
     required this.isSync,
   });
 
@@ -80,6 +85,7 @@ class PomoticaTasksOrder {
     DateTime? startDate,
     bool? isDue,
     DateTime? date,
+    bool? isActive,
     bool? isSync,
   }) {
     return PomoticaTasksOrder(
@@ -105,6 +111,7 @@ class PomoticaTasksOrder {
       startDate: startDate ?? this.startDate,
       isDue: isDue ?? this.isDue,
       date: date ?? this.date,
+      isActive: isActive ?? this.isActive,
       isSync: isSync ?? this.isSync,
     );
   }
@@ -133,6 +140,7 @@ class PomoticaTasksOrder {
       'startDate': startDate?.millisecondsSinceEpoch,
       'isDue': isDue,
       'date': date?.millisecondsSinceEpoch,
+      'isActive': isActive,
       'isSync': isSync,
     };
   }
@@ -140,7 +148,7 @@ class PomoticaTasksOrder {
   factory PomoticaTasksOrder.fromMap(Map<String, dynamic> map) {
     return PomoticaTasksOrder(
       pomoticataskid: map['pomoticataskid']?.toInt(),
-      frequency: map['frequency'] ?? '',
+      frequency: map['frequency'],
       type: map['type'] ?? '',
       notes: map['notes'] ?? '',
       tags: List<String>.from(map['tags']),
@@ -151,88 +159,86 @@ class PomoticaTasksOrder {
       updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updatedAt']),
       id: map['id'] ?? '',
       text: map['text'] ?? '',
-      alias: map['alias'] ?? '',
-      everyX: map['everyX']?.toInt() ?? 0,
-      streak: map['streak']?.toInt() ?? 0,
+      alias: map['alias'],
+      everyX: map['everyX']?.toInt(),
+      streak: map['streak']?.toInt(),
       nextDue: List<String>.from(map['nextDue']),
-      yesterDaily: map['yesterDaily'] ?? false,
-      completed: map['completed'] ?? false,
-      collapseChecklist: map['collapseChecklist'] ?? false,
-      startDate: map['startDate'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['startDate'])
-          : null,
-      isDue: map['isDue'] ?? false,
-      date: map['date'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['date'])
-          : null,
+      yesterDaily: map['yesterDaily'],
+      completed: map['completed'],
+      collapseChecklist: map['collapseChecklist'],
+      startDate: map['startDate'] != null ? DateTime.fromMillisecondsSinceEpoch(map['startDate']) : null,
+      isDue: map['isDue'],
+      date: map['date'] != null ? DateTime.fromMillisecondsSinceEpoch(map['date']) : null,
+      isActive: map['isActive'] ?? false,
       isSync: map['isSync'] ?? false,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory PomoticaTasksOrder.fromJson(String source) =>
-      PomoticaTasksOrder.fromMap(json.decode(source));
+  factory PomoticaTasksOrder.fromJson(String source) => PomoticaTasksOrder.fromMap(json.decode(source));
 
   @override
   String toString() {
-    return 'PomoticaTasksOrder(pomoticataskid: $pomoticataskid, frequency: $frequency, type: $type, notes: $notes, tags: $tags, value: $value, priority: $priority, attribute: $attribute, createdAt: $createdAt, updatedAt: $updatedAt, id: $id, text: $text, alias: $alias, everyX: $everyX, streak: $streak, nextDue: $nextDue, yesterDaily: $yesterDaily, completed: $completed, collapseChecklist: $collapseChecklist, startDate: $startDate, isDue: $isDue, date: $date, isSync: $isSync)';
+    return 'PomoticaTasksOrder(pomoticataskid: $pomoticataskid, frequency: $frequency, type: $type, notes: $notes, tags: $tags, value: $value, priority: $priority, attribute: $attribute, createdAt: $createdAt, updatedAt: $updatedAt, id: $id, text: $text, alias: $alias, everyX: $everyX, streak: $streak, nextDue: $nextDue, yesterDaily: $yesterDaily, completed: $completed, collapseChecklist: $collapseChecklist, startDate: $startDate, isDue: $isDue, date: $date, isActive: $isActive, isSync: $isSync)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-
+  
     return other is PomoticaTasksOrder &&
-        other.pomoticataskid == pomoticataskid &&
-        other.frequency == frequency &&
-        other.type == type &&
-        other.notes == notes &&
-        listEquals(other.tags, tags) &&
-        other.value == value &&
-        other.priority == priority &&
-        other.attribute == attribute &&
-        other.createdAt == createdAt &&
-        other.updatedAt == updatedAt &&
-        other.id == id &&
-        other.text == text &&
-        other.alias == alias &&
-        other.everyX == everyX &&
-        other.streak == streak &&
-        listEquals(other.nextDue, nextDue) &&
-        other.yesterDaily == yesterDaily &&
-        other.completed == completed &&
-        other.collapseChecklist == collapseChecklist &&
-        other.startDate == startDate &&
-        other.isDue == isDue &&
-        other.date == date &&
-        other.isSync == isSync;
+      other.pomoticataskid == pomoticataskid &&
+      other.frequency == frequency &&
+      other.type == type &&
+      other.notes == notes &&
+      listEquals(other.tags, tags) &&
+      other.value == value &&
+      other.priority == priority &&
+      other.attribute == attribute &&
+      other.createdAt == createdAt &&
+      other.updatedAt == updatedAt &&
+      other.id == id &&
+      other.text == text &&
+      other.alias == alias &&
+      other.everyX == everyX &&
+      other.streak == streak &&
+      listEquals(other.nextDue, nextDue) &&
+      other.yesterDaily == yesterDaily &&
+      other.completed == completed &&
+      other.collapseChecklist == collapseChecklist &&
+      other.startDate == startDate &&
+      other.isDue == isDue &&
+      other.date == date &&
+      other.isActive == isActive &&
+      other.isSync == isSync;
   }
 
   @override
   int get hashCode {
     return pomoticataskid.hashCode ^
-        frequency.hashCode ^
-        type.hashCode ^
-        notes.hashCode ^
-        tags.hashCode ^
-        value.hashCode ^
-        priority.hashCode ^
-        attribute.hashCode ^
-        createdAt.hashCode ^
-        updatedAt.hashCode ^
-        id.hashCode ^
-        text.hashCode ^
-        alias.hashCode ^
-        everyX.hashCode ^
-        streak.hashCode ^
-        nextDue.hashCode ^
-        yesterDaily.hashCode ^
-        completed.hashCode ^
-        collapseChecklist.hashCode ^
-        startDate.hashCode ^
-        isDue.hashCode ^
-        date.hashCode ^
-        isSync.hashCode;
+      frequency.hashCode ^
+      type.hashCode ^
+      notes.hashCode ^
+      tags.hashCode ^
+      value.hashCode ^
+      priority.hashCode ^
+      attribute.hashCode ^
+      createdAt.hashCode ^
+      updatedAt.hashCode ^
+      id.hashCode ^
+      text.hashCode ^
+      alias.hashCode ^
+      everyX.hashCode ^
+      streak.hashCode ^
+      nextDue.hashCode ^
+      yesterDaily.hashCode ^
+      completed.hashCode ^
+      collapseChecklist.hashCode ^
+      startDate.hashCode ^
+      isDue.hashCode ^
+      date.hashCode ^
+      isActive.hashCode ^
+      isSync.hashCode;
   }
 }

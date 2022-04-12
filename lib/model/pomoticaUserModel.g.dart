@@ -17,7 +17,7 @@ extension GetPomoticaUserModelCollection on Isar {
 final PomoticaUserModelSchema = CollectionSchema(
   name: 'PomoticaUserModel',
   schema:
-      '{"name":"PomoticaUserModel","idName":"id","properties":[{"name":"bigBreakTime","type":"Long"},{"name":"breakTime","type":"Long"},{"name":"defaultWorkingTime","type":"Long"},{"name":"numberOfSessions","type":"Long"},{"name":"username","type":"String"}],"indexes":[],"links":[]}',
+      '{"name":"PomoticaUserModel","idName":"id","properties":[{"name":"bigBreakTime","type":"Long"},{"name":"breakTime","type":"Long"},{"name":"defaultWorkingTime","type":"Long"},{"name":"numberOfSessions","type":"Long"}],"indexes":[],"links":[]}',
   nativeAdapter: const _PomoticaUserModelNativeAdapter(),
   webAdapter: const _PomoticaUserModelWebAdapter(),
   idName: 'id',
@@ -25,8 +25,7 @@ final PomoticaUserModelSchema = CollectionSchema(
     'bigBreakTime': 0,
     'breakTime': 1,
     'defaultWorkingTime': 2,
-    'numberOfSessions': 3,
-    'username': 4
+    'numberOfSessions': 3
   },
   listProperties: {},
   indexIds: {},
@@ -60,7 +59,6 @@ class _PomoticaUserModelWebAdapter
         jsObj, 'defaultWorkingTime', object.defaultWorkingTime);
     IsarNative.jsObjectSet(jsObj, 'id', object.id);
     IsarNative.jsObjectSet(jsObj, 'numberOfSessions', object.numberOfSessions);
-    IsarNative.jsObjectSet(jsObj, 'username', object.username);
     return jsObj;
   }
 
@@ -77,7 +75,6 @@ class _PomoticaUserModelWebAdapter
       id: IsarNative.jsObjectGet(jsObj, 'id'),
       numberOfSessions: IsarNative.jsObjectGet(jsObj, 'numberOfSessions') ??
           double.negativeInfinity,
-      username: IsarNative.jsObjectGet(jsObj, 'username') ?? '',
     );
     return object;
   }
@@ -99,8 +96,6 @@ class _PomoticaUserModelWebAdapter
       case 'numberOfSessions':
         return (IsarNative.jsObjectGet(jsObj, 'numberOfSessions') ??
             double.negativeInfinity) as P;
-      case 'username':
-        return (IsarNative.jsObjectGet(jsObj, 'username') ?? '') as P;
       default:
         throw 'Illegal propertyName';
     }
@@ -131,9 +126,6 @@ class _PomoticaUserModelNativeAdapter
     final _defaultWorkingTime = value2;
     final value3 = object.numberOfSessions;
     final _numberOfSessions = value3;
-    final value4 = object.username;
-    final _username = IsarBinaryWriter.utf8Encoder.convert(value4);
-    dynamicSize += (_username.length) as int;
     final size = staticSize + dynamicSize;
 
     rawObj.buffer = alloc(size);
@@ -144,7 +136,6 @@ class _PomoticaUserModelNativeAdapter
     writer.writeLong(offsets[1], _breakTime);
     writer.writeLong(offsets[2], _defaultWorkingTime);
     writer.writeLong(offsets[3], _numberOfSessions);
-    writer.writeBytes(offsets[4], _username);
   }
 
   @override
@@ -156,7 +147,6 @@ class _PomoticaUserModelNativeAdapter
       defaultWorkingTime: reader.readLong(offsets[2]),
       id: id,
       numberOfSessions: reader.readLong(offsets[3]),
-      username: reader.readString(offsets[4]),
     );
     return object;
   }
@@ -175,8 +165,6 @@ class _PomoticaUserModelNativeAdapter
         return (reader.readLong(offset)) as P;
       case 3:
         return (reader.readLong(offset)) as P;
-      case 4:
-        return (reader.readString(offset)) as P;
       default:
         throw 'Illegal propertyIndex';
     }
@@ -537,113 +525,6 @@ extension PomoticaUserModelQueryFilter
       includeUpper: includeUpper,
     ));
   }
-
-  QueryBuilder<PomoticaUserModel, PomoticaUserModel, QAfterFilterCondition>
-      usernameEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return addFilterConditionInternal(FilterCondition(
-      type: ConditionType.eq,
-      property: 'username',
-      value: value,
-      caseSensitive: caseSensitive,
-    ));
-  }
-
-  QueryBuilder<PomoticaUserModel, PomoticaUserModel, QAfterFilterCondition>
-      usernameGreaterThan(
-    String value, {
-    bool caseSensitive = true,
-    bool include = false,
-  }) {
-    return addFilterConditionInternal(FilterCondition(
-      type: ConditionType.gt,
-      include: include,
-      property: 'username',
-      value: value,
-      caseSensitive: caseSensitive,
-    ));
-  }
-
-  QueryBuilder<PomoticaUserModel, PomoticaUserModel, QAfterFilterCondition>
-      usernameLessThan(
-    String value, {
-    bool caseSensitive = true,
-    bool include = false,
-  }) {
-    return addFilterConditionInternal(FilterCondition(
-      type: ConditionType.lt,
-      include: include,
-      property: 'username',
-      value: value,
-      caseSensitive: caseSensitive,
-    ));
-  }
-
-  QueryBuilder<PomoticaUserModel, PomoticaUserModel, QAfterFilterCondition>
-      usernameBetween(
-    String lower,
-    String upper, {
-    bool caseSensitive = true,
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return addFilterConditionInternal(FilterCondition.between(
-      property: 'username',
-      lower: lower,
-      includeLower: includeLower,
-      upper: upper,
-      includeUpper: includeUpper,
-      caseSensitive: caseSensitive,
-    ));
-  }
-
-  QueryBuilder<PomoticaUserModel, PomoticaUserModel, QAfterFilterCondition>
-      usernameStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return addFilterConditionInternal(FilterCondition(
-      type: ConditionType.startsWith,
-      property: 'username',
-      value: value,
-      caseSensitive: caseSensitive,
-    ));
-  }
-
-  QueryBuilder<PomoticaUserModel, PomoticaUserModel, QAfterFilterCondition>
-      usernameEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return addFilterConditionInternal(FilterCondition(
-      type: ConditionType.endsWith,
-      property: 'username',
-      value: value,
-      caseSensitive: caseSensitive,
-    ));
-  }
-
-  QueryBuilder<PomoticaUserModel, PomoticaUserModel, QAfterFilterCondition>
-      usernameContains(String value, {bool caseSensitive = true}) {
-    return addFilterConditionInternal(FilterCondition(
-      type: ConditionType.contains,
-      property: 'username',
-      value: value,
-      caseSensitive: caseSensitive,
-    ));
-  }
-
-  QueryBuilder<PomoticaUserModel, PomoticaUserModel, QAfterFilterCondition>
-      usernameMatches(String pattern, {bool caseSensitive = true}) {
-    return addFilterConditionInternal(FilterCondition(
-      type: ConditionType.matches,
-      property: 'username',
-      value: pattern,
-      caseSensitive: caseSensitive,
-    ));
-  }
 }
 
 extension PomoticaUserModelQueryLinks
@@ -699,16 +580,6 @@ extension PomoticaUserModelQueryWhereSortBy
       sortByNumberOfSessionsDesc() {
     return addSortByInternal('numberOfSessions', Sort.desc);
   }
-
-  QueryBuilder<PomoticaUserModel, PomoticaUserModel, QAfterSortBy>
-      sortByUsername() {
-    return addSortByInternal('username', Sort.asc);
-  }
-
-  QueryBuilder<PomoticaUserModel, PomoticaUserModel, QAfterSortBy>
-      sortByUsernameDesc() {
-    return addSortByInternal('username', Sort.desc);
-  }
 }
 
 extension PomoticaUserModelQueryWhereSortThenBy
@@ -761,16 +632,6 @@ extension PomoticaUserModelQueryWhereSortThenBy
       thenByNumberOfSessionsDesc() {
     return addSortByInternal('numberOfSessions', Sort.desc);
   }
-
-  QueryBuilder<PomoticaUserModel, PomoticaUserModel, QAfterSortBy>
-      thenByUsername() {
-    return addSortByInternal('username', Sort.asc);
-  }
-
-  QueryBuilder<PomoticaUserModel, PomoticaUserModel, QAfterSortBy>
-      thenByUsernameDesc() {
-    return addSortByInternal('username', Sort.desc);
-  }
 }
 
 extension PomoticaUserModelQueryWhereDistinct
@@ -798,11 +659,6 @@ extension PomoticaUserModelQueryWhereDistinct
       distinctByNumberOfSessions() {
     return addDistinctByInternal('numberOfSessions');
   }
-
-  QueryBuilder<PomoticaUserModel, PomoticaUserModel, QDistinct>
-      distinctByUsername({bool caseSensitive = true}) {
-    return addDistinctByInternal('username', caseSensitive: caseSensitive);
-  }
 }
 
 extension PomoticaUserModelQueryProperty
@@ -828,9 +684,5 @@ extension PomoticaUserModelQueryProperty
   QueryBuilder<PomoticaUserModel, int, QQueryOperations>
       numberOfSessionsProperty() {
     return addPropertyNameInternal('numberOfSessions');
-  }
-
-  QueryBuilder<PomoticaUserModel, String, QQueryOperations> usernameProperty() {
-    return addPropertyNameInternal('username');
   }
 }

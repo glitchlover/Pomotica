@@ -3,7 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:isar/isar.dart';
 import 'package:pomotica/Themes/myText.dart';
+import 'package:pomotica/database/userDataCrud.dart';
+import 'package:pomotica/model/pomoticaUserModel.dart';
+import 'package:pomotica/widget/HomeScreenWidget.dart/pomodoroSessionView.dart';
+
+import '../../core/myIsar.dart';
 
 class PomoSpace extends StatelessWidget {
   PomoSpace({Key? key}) : super(key: key);
@@ -16,16 +22,37 @@ class PomoSpace extends StatelessWidget {
       child: Center(
           child: Column(
         children: [
-          Icon(
-            Iconsax.smileys5,
-            size: 100,
-          ),
+          Image.asset("asset/img/pomobase.png", width: 100, height: 100),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Obx(
+              () =>
+                  (((ctrl.currentWorkingCount.value / (60 * 60)) % 60).floor() >
+                          0)
+                      ? Row(
+                          children: [
+                            Container(
+                              child: MyText(((ctrl.currentWorkingCount.value /
+                                              (60 * 60)) %
+                                          60)
+                                      .floor()
+                                      .toString()
+                                      .padLeft(2, "0"))
+                                  .time(),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: MyText(":").time(),
+                            ),
+                          ],
+                        )
+                      : Container(),
+            ),
             Container(
-              child: Obx(() => MyText(((ctrl.count.value / 60) % 60)
-                      .floor()
-                      .toString()
-                      .padLeft(2, "0"))
+              child: Obx(() => MyText(
+                      ((ctrl.currentWorkingCount.value / 60) % 60)
+                          .floor()
+                          .toString()
+                          .padLeft(2, "0"))
                   .time()),
             ),
             Padding(
@@ -33,13 +60,14 @@ class PomoSpace extends StatelessWidget {
               child: MyText(":").time(),
             ),
             Container(
-              child: Obx(() => MyText((ctrl.count.value % 60)
+              child: Obx(() => MyText((ctrl.currentWorkingCount.value % 60)
                       .floor()
                       .toString()
                       .padLeft(2, "0"))
                   .time()),
             )
           ]),
+          PomodoroSessionView(total: 4, done: 2),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -68,17 +96,46 @@ class PomoSpace extends StatelessWidget {
 }
 
 class PomoSpaceControllers extends GetxController {
+  var userData = UserDataCrud.userDataGetAll();
   var canPaused = false.obs;
-  var defaultBreakTime = 5*60;
-  var defaultWorkingCount = (25 * 60);
-  var count = 0.obs;
+  late int defaultBreakTime;
+  late int defaultWorkingCount;
+  late int defaultSessions;
+  var currentWorkingCount = 0.obs;
+  var currentSessions = 0.obs;
   late Timer _timer;
 
+  @override
+  void onInit() {
+    UserDataCrud.userDataCreate(
+        PomoticaUserModel(
+            id: 1,
+            defaultWorkingTime: 25,
+            breakTime: 5,
+            bigBreakTime: 10,
+            numberOfSessions: 4));
+    
+    //TODO: Fetch time from userData;
+    
+
+    super.onInit();
+  }
+
+  initializeVariables(){
+    defaultWorkingCount = userData.defaultWorkingTime * 60;
+    defaultBreakTime = userData.breakTime * 60;
+    defaultSessions = userData.numberOfSessions;
+    update();
+  }
+
   void startTimer() {
+    initializeVariables();
     canPaused.value = true;
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      count.value++;
-      if (count.value == defaultWorkingCount) {
+    _timer = Timer.periodic(Duration(microseconds: 1), (timer) {
+      //todo: change while release
+      currentWorkingCount.value++;
+      // print((currentWorkingCount / (60 * 60)) % 60);
+      if (currentWorkingCount.value == defaultWorkingCount) {
         Get.dialog(AlertDialog(
           title: MyText("Working time is over!").heading3(),
           content: MyText("have a break!"),
@@ -86,9 +143,8 @@ class PomoSpaceControllers extends GetxController {
             gotoBreak(),
             continueToWork(),
           ],
-        )
-        );
-        Timer(Duration(seconds:10),()=>Get.back());
+        ));
+        Timer(Duration(seconds: 10), () => Get.back());
       }
       update();
     });
@@ -103,7 +159,7 @@ class PomoSpaceControllers extends GetxController {
   void stop() {
     _timer.cancel();
     canPaused.value = false;
-    count.value = 0;
+    currentWorkingCount.value = 0;
     update();
   }
 
@@ -129,11 +185,12 @@ class PomoSpaceControllers extends GetxController {
 
   void breakTimeStart() {
     stop();
-    if (count.value >= defaultWorkingCount) count.value = 0;
+    if (currentWorkingCount.value >= defaultWorkingCount)
+      currentWorkingCount.value = 0;
     canPaused.value = true;
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      count.value++;
-      if (count.value == defaultBreakTime) {
+      currentWorkingCount.value++;
+      if (currentWorkingCount.value == defaultBreakTime) {
         Get.dialog(AlertDialog(
           title: MyText("Break time is over!").heading3(),
           content: MyText("Start your task!"),
@@ -160,7 +217,7 @@ class PomoSpaceControllers extends GetxController {
     return ElevatedButton.icon(
         onPressed: () {
           _timer.cancel();
-          count.value = 0;
+          currentWorkingCount.value = 0;
           startTimer();
           Get.back();
         },

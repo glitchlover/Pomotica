@@ -27,8 +27,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child:(this.widget.authModel != null)? HomeScreen():Column(
+      body: (this.widget.authModel != null)? HomeScreen():Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Spacer(),
             const CircularProgressIndicator(),

@@ -13,17 +13,20 @@ import '../widget/HomeScreenWidget.dart/pomoSpace.dart';
 import '../widget/HomeScreenWidget.dart/pomoTasksOrderInput.dart';
 
 class HomeScreen extends StatelessWidget {
-  final data;
+  bool? isNetConnected;
+  bool? isSomethingWentWrong;
   final HomeScreenController controller = Get.put(HomeScreenController());
 
-  HomeScreen({Key? key, this.data}) : super(key: key);
+  HomeScreen({Key? key, this.isNetConnected, this.isSomethingWentWrong})
+      : super(key: key) {
+    isNetConnected ??= true;
+    isSomethingWentWrong ??= false;
+  }
 
   @override
   Widget build(BuildContext context) {
     var appBar_ = AppBar(
-      title: Obx(() =>
-          MyText("Welcome ${controller.username.value} to Pomotica")
-              .heading2()),
+      title: Obx(() => MyText(controller.username.value).heading2()),
       actions: [
         IconButton(
             onPressed: () {
@@ -38,19 +41,38 @@ class HomeScreen extends StatelessWidget {
       ],
     );
 
-    return Scaffold(
-        appBar: appBar_,
-        body: SingleChildScrollView(
-          physics: ScrollPhysics(),
-          padding: EdgeInsets.zero,
-          child: Column(
-            children: [
-              PomoSpace(), 
-              SizedBox(height: 15,),
-              PomoTasksOrderInput()
-              ],
-          ),
-        ));
+    return GetBuilder<HomeScreenController>(
+      init: HomeScreenController(),
+      initState: (_) {
+        if (!(isNetConnected as bool)) {
+          Get.snackbar("Internet is not connected",
+                  "Please try to connect to the internet")
+              .close(withAnimations: true);
+        }
+        if (isSomethingWentWrong as bool) {
+          Get.snackbar("Something went wrong",
+                  "Please enter an issue with details showed in debug under settings")
+              .close(withAnimations: true);
+        }
+      },
+      builder: (_) {
+        return Scaffold(
+            appBar: appBar_,
+            body: SingleChildScrollView(
+              physics: ScrollPhysics(),
+              padding: EdgeInsets.zero,
+              child: Column(
+                children: [
+                  PomoSpace(),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  PomoTasksOrderInput()
+                ],
+              ),
+            ));
+      },
+    );
   }
 
   loggedOut() async {

@@ -17,7 +17,7 @@ extension GetPomoticaTasksOrderCollection on Isar {
 final PomoticaTasksOrderSchema = CollectionSchema(
   name: 'PomoticaTasksOrder',
   schema:
-      '{"name":"PomoticaTasksOrder","idName":"pomoticataskid","properties":[{"name":"alias","type":"String"},{"name":"attribute","type":"String"},{"name":"collapseChecklist","type":"Bool"},{"name":"completed","type":"Bool"},{"name":"createdAt","type":"Long"},{"name":"date","type":"Long"},{"name":"everyX","type":"Long"},{"name":"frequency","type":"String"},{"name":"hashCode","type":"Long"},{"name":"id","type":"String"},{"name":"isDue","type":"Bool"},{"name":"isSync","type":"Bool"},{"name":"nextDue","type":"StringList"},{"name":"notes","type":"String"},{"name":"priority","type":"Double"},{"name":"startDate","type":"Long"},{"name":"streak","type":"Long"},{"name":"tags","type":"StringList"},{"name":"text","type":"String"},{"name":"type","type":"String"},{"name":"updatedAt","type":"Long"},{"name":"value","type":"Double"},{"name":"yesterDaily","type":"Bool"}],"indexes":[],"links":[]}',
+      '{"name":"PomoticaTasksOrder","idName":"pomoticataskid","properties":[{"name":"alias","type":"String"},{"name":"attribute","type":"String"},{"name":"collapseChecklist","type":"Bool"},{"name":"completed","type":"Bool"},{"name":"createdAt","type":"Long"},{"name":"date","type":"Long"},{"name":"everyX","type":"Long"},{"name":"frequency","type":"String"},{"name":"hashCode","type":"Long"},{"name":"id","type":"String"},{"name":"isActive","type":"Bool"},{"name":"isDue","type":"Bool"},{"name":"isSync","type":"Bool"},{"name":"nextDue","type":"StringList"},{"name":"notes","type":"String"},{"name":"priority","type":"Double"},{"name":"startDate","type":"Long"},{"name":"streak","type":"Long"},{"name":"tags","type":"StringList"},{"name":"text","type":"String"},{"name":"type","type":"String"},{"name":"updatedAt","type":"Long"},{"name":"value","type":"Double"},{"name":"yesterDaily","type":"Bool"}],"indexes":[],"links":[]}',
   nativeAdapter: const _PomoticaTasksOrderNativeAdapter(),
   webAdapter: const _PomoticaTasksOrderWebAdapter(),
   idName: 'pomoticataskid',
@@ -32,19 +32,20 @@ final PomoticaTasksOrderSchema = CollectionSchema(
     'frequency': 7,
     'hashCode': 8,
     'id': 9,
-    'isDue': 10,
-    'isSync': 11,
-    'nextDue': 12,
-    'notes': 13,
-    'priority': 14,
-    'startDate': 15,
-    'streak': 16,
-    'tags': 17,
-    'text': 18,
-    'type': 19,
-    'updatedAt': 20,
-    'value': 21,
-    'yesterDaily': 22
+    'isActive': 10,
+    'isDue': 11,
+    'isSync': 12,
+    'nextDue': 13,
+    'notes': 14,
+    'priority': 15,
+    'startDate': 16,
+    'streak': 17,
+    'tags': 18,
+    'text': 19,
+    'type': 20,
+    'updatedAt': 21,
+    'value': 22,
+    'yesterDaily': 23
   },
   listProperties: {'nextDue', 'tags'},
   indexIds: {},
@@ -85,6 +86,7 @@ class _PomoticaTasksOrderWebAdapter
     IsarNative.jsObjectSet(jsObj, 'frequency', object.frequency);
     IsarNative.jsObjectSet(jsObj, 'hashCode', object.hashCode);
     IsarNative.jsObjectSet(jsObj, 'id', object.id);
+    IsarNative.jsObjectSet(jsObj, 'isActive', object.isActive);
     IsarNative.jsObjectSet(jsObj, 'isDue', object.isDue);
     IsarNative.jsObjectSet(jsObj, 'isSync', object.isSync);
     IsarNative.jsObjectSet(jsObj, 'nextDue', object.nextDue);
@@ -127,6 +129,7 @@ class _PomoticaTasksOrderWebAdapter
       everyX: IsarNative.jsObjectGet(jsObj, 'everyX'),
       frequency: IsarNative.jsObjectGet(jsObj, 'frequency'),
       id: IsarNative.jsObjectGet(jsObj, 'id') ?? '',
+      isActive: IsarNative.jsObjectGet(jsObj, 'isActive') ?? false,
       isDue: IsarNative.jsObjectGet(jsObj, 'isDue'),
       isSync: IsarNative.jsObjectGet(jsObj, 'isSync') ?? false,
       nextDue: (IsarNative.jsObjectGet(jsObj, 'nextDue') as List?)
@@ -197,6 +200,8 @@ class _PomoticaTasksOrderWebAdapter
             double.negativeInfinity) as P;
       case 'id':
         return (IsarNative.jsObjectGet(jsObj, 'id') ?? '') as P;
+      case 'isActive':
+        return (IsarNative.jsObjectGet(jsObj, 'isActive') ?? false) as P;
       case 'isDue':
         return (IsarNative.jsObjectGet(jsObj, 'isDue')) as P;
       case 'isSync':
@@ -296,52 +301,54 @@ class _PomoticaTasksOrderNativeAdapter
     final value9 = object.id;
     final _id = IsarBinaryWriter.utf8Encoder.convert(value9);
     dynamicSize += (_id.length) as int;
-    final value10 = object.isDue;
-    final _isDue = value10;
-    final value11 = object.isSync;
-    final _isSync = value11;
-    final value12 = object.nextDue;
-    dynamicSize += (value12?.length ?? 0) * 8;
-    List<IsarUint8List?>? bytesList12;
-    if (value12 != null) {
-      bytesList12 = [];
-      for (var str in value12) {
+    final value10 = object.isActive;
+    final _isActive = value10;
+    final value11 = object.isDue;
+    final _isDue = value11;
+    final value12 = object.isSync;
+    final _isSync = value12;
+    final value13 = object.nextDue;
+    dynamicSize += (value13?.length ?? 0) * 8;
+    List<IsarUint8List?>? bytesList13;
+    if (value13 != null) {
+      bytesList13 = [];
+      for (var str in value13) {
         final bytes = IsarBinaryWriter.utf8Encoder.convert(str);
-        bytesList12.add(bytes);
+        bytesList13.add(bytes);
         dynamicSize += bytes.length as int;
       }
     }
-    final _nextDue = bytesList12;
-    final value13 = object.notes;
-    final _notes = IsarBinaryWriter.utf8Encoder.convert(value13);
+    final _nextDue = bytesList13;
+    final value14 = object.notes;
+    final _notes = IsarBinaryWriter.utf8Encoder.convert(value14);
     dynamicSize += (_notes.length) as int;
-    final value14 = object.priority;
-    final _priority = value14;
-    final value15 = object.startDate;
-    final _startDate = value15;
-    final value16 = object.streak;
-    final _streak = value16;
-    final value17 = object.tags;
-    dynamicSize += (value17.length) * 8;
-    final bytesList17 = <IsarUint8List>[];
-    for (var str in value17) {
+    final value15 = object.priority;
+    final _priority = value15;
+    final value16 = object.startDate;
+    final _startDate = value16;
+    final value17 = object.streak;
+    final _streak = value17;
+    final value18 = object.tags;
+    dynamicSize += (value18.length) * 8;
+    final bytesList18 = <IsarUint8List>[];
+    for (var str in value18) {
       final bytes = IsarBinaryWriter.utf8Encoder.convert(str);
-      bytesList17.add(bytes);
+      bytesList18.add(bytes);
       dynamicSize += bytes.length as int;
     }
-    final _tags = bytesList17;
-    final value18 = object.text;
-    final _text = IsarBinaryWriter.utf8Encoder.convert(value18);
+    final _tags = bytesList18;
+    final value19 = object.text;
+    final _text = IsarBinaryWriter.utf8Encoder.convert(value19);
     dynamicSize += (_text.length) as int;
-    final value19 = object.type;
-    final _type = IsarBinaryWriter.utf8Encoder.convert(value19);
+    final value20 = object.type;
+    final _type = IsarBinaryWriter.utf8Encoder.convert(value20);
     dynamicSize += (_type.length) as int;
-    final value20 = object.updatedAt;
-    final _updatedAt = value20;
-    final value21 = object.value;
-    final _value = value21;
-    final value22 = object.yesterDaily;
-    final _yesterDaily = value22;
+    final value21 = object.updatedAt;
+    final _updatedAt = value21;
+    final value22 = object.value;
+    final _value = value22;
+    final value23 = object.yesterDaily;
+    final _yesterDaily = value23;
     final size = staticSize + dynamicSize;
 
     rawObj.buffer = alloc(size);
@@ -358,19 +365,20 @@ class _PomoticaTasksOrderNativeAdapter
     writer.writeBytes(offsets[7], _frequency);
     writer.writeLong(offsets[8], _hashCode);
     writer.writeBytes(offsets[9], _id);
-    writer.writeBool(offsets[10], _isDue);
-    writer.writeBool(offsets[11], _isSync);
-    writer.writeStringList(offsets[12], _nextDue);
-    writer.writeBytes(offsets[13], _notes);
-    writer.writeDouble(offsets[14], _priority);
-    writer.writeDateTime(offsets[15], _startDate);
-    writer.writeLong(offsets[16], _streak);
-    writer.writeStringList(offsets[17], _tags);
-    writer.writeBytes(offsets[18], _text);
-    writer.writeBytes(offsets[19], _type);
-    writer.writeDateTime(offsets[20], _updatedAt);
-    writer.writeDouble(offsets[21], _value);
-    writer.writeBool(offsets[22], _yesterDaily);
+    writer.writeBool(offsets[10], _isActive);
+    writer.writeBool(offsets[11], _isDue);
+    writer.writeBool(offsets[12], _isSync);
+    writer.writeStringList(offsets[13], _nextDue);
+    writer.writeBytes(offsets[14], _notes);
+    writer.writeDouble(offsets[15], _priority);
+    writer.writeDateTime(offsets[16], _startDate);
+    writer.writeLong(offsets[17], _streak);
+    writer.writeStringList(offsets[18], _tags);
+    writer.writeBytes(offsets[19], _text);
+    writer.writeBytes(offsets[20], _type);
+    writer.writeDateTime(offsets[21], _updatedAt);
+    writer.writeDouble(offsets[22], _value);
+    writer.writeBool(offsets[23], _yesterDaily);
   }
 
   @override
@@ -386,20 +394,21 @@ class _PomoticaTasksOrderNativeAdapter
       everyX: reader.readLongOrNull(offsets[6]),
       frequency: reader.readStringOrNull(offsets[7]),
       id: reader.readString(offsets[9]),
-      isDue: reader.readBoolOrNull(offsets[10]),
-      isSync: reader.readBool(offsets[11]),
-      nextDue: reader.readStringList(offsets[12]),
-      notes: reader.readString(offsets[13]),
+      isActive: reader.readBool(offsets[10]),
+      isDue: reader.readBoolOrNull(offsets[11]),
+      isSync: reader.readBool(offsets[12]),
+      nextDue: reader.readStringList(offsets[13]),
+      notes: reader.readString(offsets[14]),
       pomoticataskid: id,
-      priority: reader.readDouble(offsets[14]),
-      startDate: reader.readDateTimeOrNull(offsets[15]),
-      streak: reader.readLongOrNull(offsets[16]),
-      tags: reader.readStringList(offsets[17]) ?? [],
-      text: reader.readString(offsets[18]),
-      type: reader.readString(offsets[19]),
-      updatedAt: reader.readDateTime(offsets[20]),
-      value: reader.readDouble(offsets[21]),
-      yesterDaily: reader.readBoolOrNull(offsets[22]),
+      priority: reader.readDouble(offsets[15]),
+      startDate: reader.readDateTimeOrNull(offsets[16]),
+      streak: reader.readLongOrNull(offsets[17]),
+      tags: reader.readStringList(offsets[18]) ?? [],
+      text: reader.readString(offsets[19]),
+      type: reader.readString(offsets[20]),
+      updatedAt: reader.readDateTime(offsets[21]),
+      value: reader.readDouble(offsets[22]),
+      yesterDaily: reader.readBoolOrNull(offsets[23]),
     );
     return object;
   }
@@ -431,30 +440,32 @@ class _PomoticaTasksOrderNativeAdapter
       case 9:
         return (reader.readString(offset)) as P;
       case 10:
-        return (reader.readBoolOrNull(offset)) as P;
-      case 11:
         return (reader.readBool(offset)) as P;
+      case 11:
+        return (reader.readBoolOrNull(offset)) as P;
       case 12:
-        return (reader.readStringList(offset)) as P;
+        return (reader.readBool(offset)) as P;
       case 13:
-        return (reader.readString(offset)) as P;
+        return (reader.readStringList(offset)) as P;
       case 14:
-        return (reader.readDouble(offset)) as P;
-      case 15:
-        return (reader.readDateTimeOrNull(offset)) as P;
-      case 16:
-        return (reader.readLongOrNull(offset)) as P;
-      case 17:
-        return (reader.readStringList(offset) ?? []) as P;
-      case 18:
         return (reader.readString(offset)) as P;
+      case 15:
+        return (reader.readDouble(offset)) as P;
+      case 16:
+        return (reader.readDateTimeOrNull(offset)) as P;
+      case 17:
+        return (reader.readLongOrNull(offset)) as P;
+      case 18:
+        return (reader.readStringList(offset) ?? []) as P;
       case 19:
         return (reader.readString(offset)) as P;
       case 20:
-        return (reader.readDateTime(offset)) as P;
+        return (reader.readString(offset)) as P;
       case 21:
-        return (reader.readDouble(offset)) as P;
+        return (reader.readDateTime(offset)) as P;
       case 22:
+        return (reader.readDouble(offset)) as P;
+      case 23:
         return (reader.readBoolOrNull(offset)) as P;
       default:
         throw 'Illegal propertyIndex';
@@ -1255,6 +1266,15 @@ extension PomoticaTasksOrderQueryFilter
       property: 'id',
       value: pattern,
       caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<PomoticaTasksOrder, PomoticaTasksOrder, QAfterFilterCondition>
+      isActiveEqualTo(bool value) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.eq,
+      property: 'isActive',
+      value: value,
     ));
   }
 
@@ -2256,6 +2276,16 @@ extension PomoticaTasksOrderQueryWhereSortBy
   }
 
   QueryBuilder<PomoticaTasksOrder, PomoticaTasksOrder, QAfterSortBy>
+      sortByIsActive() {
+    return addSortByInternal('isActive', Sort.asc);
+  }
+
+  QueryBuilder<PomoticaTasksOrder, PomoticaTasksOrder, QAfterSortBy>
+      sortByIsActiveDesc() {
+    return addSortByInternal('isActive', Sort.desc);
+  }
+
+  QueryBuilder<PomoticaTasksOrder, PomoticaTasksOrder, QAfterSortBy>
       sortByIsDue() {
     return addSortByInternal('isDue', Sort.asc);
   }
@@ -2479,6 +2509,16 @@ extension PomoticaTasksOrderQueryWhereSortThenBy
   }
 
   QueryBuilder<PomoticaTasksOrder, PomoticaTasksOrder, QAfterSortBy>
+      thenByIsActive() {
+    return addSortByInternal('isActive', Sort.asc);
+  }
+
+  QueryBuilder<PomoticaTasksOrder, PomoticaTasksOrder, QAfterSortBy>
+      thenByIsActiveDesc() {
+    return addSortByInternal('isActive', Sort.desc);
+  }
+
+  QueryBuilder<PomoticaTasksOrder, PomoticaTasksOrder, QAfterSortBy>
       thenByIsDue() {
     return addSortByInternal('isDue', Sort.asc);
   }
@@ -2652,6 +2692,11 @@ extension PomoticaTasksOrderQueryWhereDistinct
   }
 
   QueryBuilder<PomoticaTasksOrder, PomoticaTasksOrder, QDistinct>
+      distinctByIsActive() {
+    return addDistinctByInternal('isActive');
+  }
+
+  QueryBuilder<PomoticaTasksOrder, PomoticaTasksOrder, QDistinct>
       distinctByIsDue() {
     return addDistinctByInternal('isDue');
   }
@@ -2757,6 +2802,10 @@ extension PomoticaTasksOrderQueryProperty
 
   QueryBuilder<PomoticaTasksOrder, String, QQueryOperations> idProperty() {
     return addPropertyNameInternal('id');
+  }
+
+  QueryBuilder<PomoticaTasksOrder, bool, QQueryOperations> isActiveProperty() {
+    return addPropertyNameInternal('isActive');
   }
 
   QueryBuilder<PomoticaTasksOrder, bool?, QQueryOperations> isDueProperty() {

@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:markdown/markdown.dart' as md;
 import 'package:get/get.dart';
 import 'package:isar/isar.dart';
-import 'package:pomotica/Themes/myColors.dart';
-import 'package:pomotica/Themes/myText.dart';
+import 'package:pomotica/core/myIsar.dart';
 import 'package:pomotica/database/tasksOrderCrud.dart';
-import 'package:pomotica/model/habiticaTasksModel.dart';
 import 'package:pomotica/model/pomoticaTasksOrderModel.dart';
+import 'package:pomotica/model/pomoticaUserModel.dart';
 import 'package:pomotica/services/userDataService.dart';
 import 'package:pomotica/widget/HomeScreenWidget.dart/habiticaCard.dart';
 
@@ -27,20 +24,12 @@ class PomoTasksOrderInput extends StatelessWidget {
                 shrinkWrap: true,
                 primary: false,
                 physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (builder, index) => HabiticaCard(title: value.tasksOrder[index].toString(), type: value.tasksType[index].toString()),
-                // separatorBuilder: (builder, i) => Column(
-                //   children: [
-                //     Container(
-                //       height: 3,
-                //       width:Get.width - 32,
-                //       decoration: BoxDecoration(
-                //         color: MyColors.shadowColor,
-                //         borderRadius: BorderRadius.circular(15)
-                //       ),
-                //     ),
-                  //   SizedBox(height: 10,)
-                  // ],
-                // ),
+                itemBuilder: (builder, index) => HabiticaCard(
+                    title: value.tasksOrder[index].toString(),
+                    type: value.tasksType[index].toString(),
+                    dueDate: value.tasksDueDate[index],
+                    notes: value.tasksNotes[index],
+                    ),
                 itemCount: value.tasksOrder.length,
               ));
         });
@@ -50,18 +39,25 @@ class PomoTasksOrderInput extends StatelessWidget {
 class PomoTasksOrderInputController extends GetxController {
   List<dynamic> tasksOrder = [];
   List<dynamic> tasksType = [];
-  Isar isar = TasksOrderCrud.isar;
+  List<dynamic> tasksTag = [];
+  List<dynamic> tasksDueDate = [];
+  List<dynamic> tasksNotes = [];
+  Isar isar = MyIsar.isar;
 
   @override
   void onInit() async {
-    List<PomoticaTasksOrder> tasks =
-        TasksOrderCrud.tasksOrderGetAll(isar);
+    List<PomoticaTasksOrder> tasks = TasksOrderCrud.tasksOrderGetAll(isar);
     for (var task in tasks) {
       if (task.type == "reward") continue;
-      this.tasksOrder.add(task.text);
-      this.tasksType.add(task.type);
+      tasksOrder.add(task.text);
+      tasksType.add(task.type);
+      tasksDueDate.add(task.nextDue);
+      tasksNotes.add(task.notes);
       update();
     }
+
+    PomoticaUserModel userModel = UserDataService().retriveUserData();
+
     update();
     super.onInit();
   }

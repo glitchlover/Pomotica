@@ -1,25 +1,24 @@
 import 'dart:async';
 import 'dart:io';
-
-import 'package:http/http.dart';
 import 'package:isar/isar.dart';
 import 'package:pomotica/core/habiticaApi.dart';
-import 'package:pomotica/model/authModel.dart';
+import 'package:pomotica/core/myIsar.dart';
+import 'package:pomotica/database/tasksOrderCrud.dart';
+import 'package:pomotica/database/userDataCrud.dart';
 import 'package:pomotica/model/habiticaTasksModel.dart';
 import 'package:pomotica/model/pomoticaUserModel.dart';
 import 'package:pomotica/services/documentServices.dart';
-import 'package:pomotica/services/habiticaAuthServices.dart';
-import 'package:pomotica/services/myHabiticaAuth.dart';
 
-import '../model/habiticaUserModel.dart';
 import '../model/pomoticaTasksOrderModel.dart';
 
 class UserDataService {
   final documentServices = new DocumentServices(db: "habitica_user");
   String username = "";
+  int defaultWorkingTime = 25;
+  int breakTime = 5;
+  int bigBreakTime = 10;
+  int numberOfSessions = 4;
   String taskpath = '/api/v3/tasks/user';
-
-  setUsername() async {}
 
   getUsername() async {
     var habiticaUserModel = await documentServices.retriveUser();
@@ -27,8 +26,6 @@ class UserDataService {
     print(username);
     return username;
   }
-
-  setTask() {}
 
   fetchTaskModel() async {
     var response = await HabiticaApi(path: taskpath).getApiResponse();
@@ -43,11 +40,6 @@ class UserDataService {
     } on SocketException catch (e) {
       return "Not Connected: " + e.message;
     }
-  }
-
-  Future<HabiticaTaskModel> getTasksOrder() async {
-    var tasksOrderModel = await documentServices.retriveTasksOrder();
-    return tasksOrderModel;
   }
 
   Future<List<PomoticaTasksOrder>> habiticaToPomoticaTaskModel() async {
@@ -75,9 +67,30 @@ class UserDataService {
           completed: data[i].completed,
           collapseChecklist: data[i].collapseChecklist,
           isDue: data[i].isDue,
+          isActive: false,
           isSync: true));
     }
 
     return pomoticaTasksOrder;
+  }
+
+  saveUserData(PomoticaUserModel userModel) {
+    Isar isar = MyIsar.isar;
+    UserDataCrud.userDataCreate(userModel);
+  }
+
+  PomoticaUserModel retriveUserData() {
+    Isar isar = MyIsar.isar;
+    PomoticaUserModel? userModel = isar.pomoticaUserModels.getSync(1);
+    if (userModel == null) {
+      userModel = PomoticaUserModel(
+          defaultWorkingTime: defaultWorkingTime,
+          breakTime: breakTime,
+          bigBreakTime: bigBreakTime,
+          numberOfSessions: numberOfSessions);
+      saveUserData(userModel);
+      return userModel;
+    }
+    return userModel;
   }
 }
